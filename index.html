@@ -9,21 +9,24 @@
 </head>
 <body>
     <div class="container">
-        <div class="title">
+        <div class="heading">
             <h1>My book library</h1>
             <p>Short description of what you can do here. I will add this description later, since i dont want to do that right now.</p>
         </div>
-        <div class="form">
-            <form>
+
+        <button id="modal-button">Add new book</button>
+        <dialog id="modal">
+            <form method="dialog" id="form">
                 <div class="form-values">
-                    <input type="text" required>
-                    <input type="text" required>
-                    <input type="number" required>
-                    <input type="checkbox">
+                    <input type="text" class="title" required>
+                    <input type="text" class="author" required>
+                    <input type="number" class="pages" required>
+                    <input type="checkbox" class="status">
                 </div>
-                <button type="submit">Add Book</button>
+                <button type="submit" id="save-button">Save</button>
             </form>
-        </div>
+            <button id="close-button">Close</button>
+        </dialog>
         <div class="table-container">
             <table id="table">
                 <thead>

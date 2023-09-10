@@ -1,7 +1,15 @@
 
+// variables
 
+const openButton = document.querySelector("#modal-button");
+const modal = document.querySelector("#modal");
+const closeButton = document.querySelector("#close-button");
+const saveButton = document.querySelector("#save-button");
 const myLibrary = [];
 
+
+
+// functions
 
 function Book(title, author, pages, status) {
     this.title = title;
@@ -10,20 +18,11 @@ function Book(title, author, pages, status) {
     this.status = status;
 }
 
-const book1 = new Book("Hola", "Mr. Hola1", 201, false);
-const book2 = new Book("Hola2", "Mr. Hola2", 202, true);
-const book3 = new Book("Hola3", "Mr. Hola3", 203, false);
-myLibrary.push(book1, book2, book3)
 
-
-function addBookToLibrary() {
-    const bookTitle = window.prompt("Add a new book");
-    const bookAuthor = window.prompt("Add the author of the book");
-    const bookPages = window.prompt("Anzahl der Seiten");
-    const bookRead = window.prompt("Gelesen");
-    const newBook = new Book(bookTitle, bookAuthor, bookPages, bookRead);
+function addBookToLibrary(newBook) {
     myLibrary.push(newBook);
 }
+
 
 function displayBooks () {
     const table = document.getElementById("table");
@@ -33,26 +32,132 @@ function displayBooks () {
         const tableRow = document.createElement("tr");
 
         for (let property in myLibrary[i]) {
-            const tableCell = document.createElement("td");
-            tableCell.textContent = myLibrary[i][property];
-            tableRow.appendChild(tableCell);
+
+            if (property === "title" || property === "author" || property === "pages") {
+                addBookProperties(i, property, tableRow)
+            } else if (property === "status") {
+                addStatusButton(i, property, tableRow);
+            };
+            
         };
 
+        addRemoveButton(i, tableRow);
         tableBody.appendChild(tableRow);
     };
 
     table.appendChild(tableBody);
+    changeReadStatusByClick();
+    deleteBookByClick();
 }
+
+
+function changeReadStatusByClick() {
+    const statusButtons = document.querySelectorAll(".statusButton");
+    statusButtons.forEach((button) => {
+        button.addEventListener("click", (e) => {
+            myLibrary[e.target.dataset.row].changeStatus();
+            button.textContent = myLibrary[e.target.dataset.row].status
+        });
+    });
+};
+
+function deleteBookByClick() {
+    const removeButtons = document.querySelectorAll(".removeButton");
+    removeButtons.forEach((button) => {
+        button.addEventListener("click", (e) => {
+        myLibrary.splice(e.target.dataset.row, 1);
+        console.log(e.target.dataset.row);
+        displayBooks();
+        });
+    });
+};
+
+
+
+
+function addRemoveButton(i, tableRow) {
+    const tableCell = document.createElement("td");
+    const removeButton = document.createElement("button");
+    removeButton.classList.add("removeButton")
+    removeButton.dataset.row = `${[i]}`;
+    removeButton.textContent = "DELETE";
+    tableCell.appendChild(removeButton);
+    tableRow.appendChild(tableCell);
+}
+
+
+function addBookProperties(i, property, tableRow) {
+    const tableCell = document.createElement("td");
+    tableCell.textContent = myLibrary[i][property];
+    tableRow.appendChild(tableCell);
+}
+
+
+function addStatusButton(i, property, tableRow) {
+    const tableCell = document.createElement("td");
+    const statusButton = document.createElement("button");
+    statusButton.classList.add("statusButton")
+    statusButton.dataset.row = `${[i]}`;
+    statusButton.textContent = myLibrary[i][property];
+    tableCell.appendChild(statusButton);
+    tableRow.appendChild(tableCell);
+}
+
+
+openButton.addEventListener("click", () => {
+    modal.showModal()
+});
+
+closeButton.addEventListener("click", () => {
+    modal.close()
+});
+
+
+function getBookInput () {
+    const title = document.querySelector(".title").value;
+    const author = document.querySelector(".author").value;
+    const pages = document.querySelector(".pages").value;
+    const status = document.querySelector(".status").checked ? "READ" : "NOT READ";
+    return new Book(title, author, pages, status);
+}
+
+function resetBookInput () {
+    document.querySelector(".title").value = "";
+    document.querySelector(".author").value = "";
+    document.querySelector(".pages").value = "";
+    document.querySelector(".status").checked = false;
+};
+
+function clearDisplay () {
+    const tableBody = document.querySelector("tbody");
+    tableBody.remove();
+};
+
+saveButton.addEventListener("click", (e) => {
+    const form = document.querySelector("#form");
+    if (form.checkValidity()) {
+        e.preventDefault();
+        addBookToLibrary(getBookInput());
+        resetBookInput();
+        clearDisplay();
+        displayBooks();
+        modal.close();
+    };
+});
+
+const statusCell = document.querySelector("td")
+
+Book.prototype.changeStatus = function() {
+    (this.status === "READ") ? this.status = "NOT READ" : this.status = "READ";
+}
+
+const test = new Book("hi", "hola", 3, "READ");
+myLibrary.push(test);
 
 displayBooks();
 
+
 /*
-Create form
-prevent submit button default Action
-when button is clicked,let function input the form information into variables
-create function that uses these variables to create a new object.
-use the title of the book as constant name so that the newly created object has the name of the title
-push the book object into the array
-
-
+change status value from true/false to read/unread
+add a delete button to every book
 */
