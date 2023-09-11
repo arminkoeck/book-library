@@ -6,38 +6,52 @@
     <title>Book Library</title>
     <link rel="stylesheet" href="styles.css">
     <script src="script.js" defer></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500&family=Raleway:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
-        <div class="heading">
-            <h1>My book library</h1>
-            <p>Short description of what you can do here. I will add this description later, since i dont want to do that right now.</p>
-        </div>
+        <div class="content-container">
+            <div class="heading">
+                <h1>My book library</h1>
+                <p>Add books to your digital library and keep track of all the books you have already read and those you plan on reading.</p>
+            </div>
 
-        <button id="modal-button">Add new book</button>
-        <dialog id="modal">
-            <form method="dialog" id="form">
-                <div class="form-values">
-                    <input type="text" class="title" required>
-                    <input type="text" class="author" required>
-                    <input type="number" class="pages" required>
-                    <input type="checkbox" class="status">
+            <button id="modal-button">ADD BOOK</button>
+            <dialog id="modal">
+                <form method="dialog" id="form">
+                    <div class="form-values">
+                        <label>Title</label>
+                        <input type="text" class="title" required>
+                        <label>Author</label>
+                        <input type="text" class="author" required>
+                        <label>Pages</label>
+                        <input type="number" class="pages" required>
+                        <div class="checkbox-container">
+                            <label>Have you read it?</label>
+                            <input type="checkbox" class="status">
+                        </div>
+                    </div>
+                </form>
+                <div id="form-buttons">
+                    <button type="submit" id="save-button" form ="form">Save</button>
+                    <button id="close-button">Close</button>
                 </div>
-                <button type="submit" id="save-button">Save</button>
-            </form>
-            <button id="close-button">Close</button>
-        </dialog>
-        <div class="table-container">
-            <table id="table">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Author</th>
-                        <th>Pages</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-            </table>
+            </dialog>
+            <div class="table-container">
+                <table id="table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Author</th>
+                            <th>Pages</th>
+                            <th>Status</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
         </div>
     </div>    
     
