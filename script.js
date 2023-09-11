@@ -48,7 +48,7 @@ function displayBooks () {
     table.appendChild(tableBody);
     changeReadStatusByClick();
     deleteBookByClick();
-}
+};
 
 
 function changeReadStatusByClick() {
@@ -57,6 +57,12 @@ function changeReadStatusByClick() {
         button.addEventListener("click", (e) => {
             myLibrary[e.target.dataset.row].changeStatus();
             button.textContent = myLibrary[e.target.dataset.row].status
+            if (myLibrary[e.target.dataset.row].status === "READ") {
+                button.classList.add("active")
+            } else {
+                button.classList.remove("active");
+            }
+            ;
         });
     });
 };
@@ -66,13 +72,19 @@ function deleteBookByClick() {
     removeButtons.forEach((button) => {
         button.addEventListener("click", (e) => {
         myLibrary.splice(e.target.dataset.row, 1);
-        console.log(e.target.dataset.row);
+        clearDisplay();
         displayBooks();
         });
     });
 };
 
 
+
+function addBookProperties(i, property, tableRow) {
+    const tableCell = document.createElement("td");
+    tableCell.textContent = myLibrary[i][property];
+    tableRow.appendChild(tableCell);
+}
 
 
 function addRemoveButton(i, tableRow) {
@@ -86,14 +98,7 @@ function addRemoveButton(i, tableRow) {
 }
 
 
-function addBookProperties(i, property, tableRow) {
-    const tableCell = document.createElement("td");
-    tableCell.textContent = myLibrary[i][property];
-    tableRow.appendChild(tableCell);
-}
-
-
-function addStatusButton(i, property, tableRow) {
+function addStatusButton(i, property, tableRow,) {
     const tableCell = document.createElement("td");
     const statusButton = document.createElement("button");
     statusButton.classList.add("statusButton")
@@ -101,8 +106,12 @@ function addStatusButton(i, property, tableRow) {
     statusButton.textContent = myLibrary[i][property];
     tableCell.appendChild(statusButton);
     tableRow.appendChild(tableCell);
-}
-
+    if (myLibrary[i].status === "READ") {
+        statusButton.classList.add("active");
+    } else {
+        statusButton.classList.remove("active");
+    }
+};
 
 openButton.addEventListener("click", () => {
     modal.showModal()
@@ -119,7 +128,7 @@ function getBookInput () {
     const pages = document.querySelector(".pages").value;
     const status = document.querySelector(".status").checked ? "READ" : "NOT READ";
     return new Book(title, author, pages, status);
-}
+};
 
 function resetBookInput () {
     document.querySelector(".title").value = "";
@@ -151,13 +160,9 @@ Book.prototype.changeStatus = function() {
     (this.status === "READ") ? this.status = "NOT READ" : this.status = "READ";
 }
 
-const test = new Book("hi", "hola", 3, "READ");
-myLibrary.push(test);
+const dummyBook = new Book("Lord of the Rings", "John R. R. Tolkien", 1184, "READ");
+myLibrary.push(dummyBook);
+const dummyBook2 = new Book("Harry Potter and the Chamber of Secrets", "J. K. Rowling", 223, "NOT READ");
+myLibrary.push(dummyBook2);
 
 displayBooks();
-
-
-/*
-change status value from true/false to read/unread
-add a delete button to every book
-*/
